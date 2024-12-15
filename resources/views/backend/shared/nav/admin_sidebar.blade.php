@@ -32,6 +32,50 @@
             </a>
         </li>
     @endif
+    @php
+        if(config('admin_doctor_config')){
+            $module_config = config('admin_doctor_config');
+        }else{
+            $module_config = ['valid'=>0];
+        }
+        echo config('admin_doctor_config')['name'];
+    @endphp
+    @if ($module_config['valid']==1)
+        @if (hasPermission([$module_config['permissions']]))
+            @if (count($module_config['sub_menu'])>0)
+            <li class="sidebar-list">
+                <a class="sidebar-link sidebar-title link-nav" href="{{ $module_config['route'] }}"
+                    aria-expanded="false"><i data-feather="unlock"></i><span>
+                      {{ $module_config['name'] }}  </span>
+                </a>
+            </li>
+            @else
+            <li class="sidebar-list">
+                <a class="sidebar-link sidebar-title" href="javascript:void(0)" aria-expanded="false">
+                    <i data-feather="slack"></i>
+                    <span class="lan-3">{{ $module_config['name'] }}</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    @if (hasPermission(['language-index', 'language-create', 'language-update', 'language-delete']))
+                        <li>
+                            <a href="{{ route('admin.language.index') }}" class="sidebar-link">
+                                <span> {{ __('admin_local.Language List') }} </span>
+                            </a>
+                        </li>
+                    @endif
+    
+                    @if (hasPermission(['backend-string-index']))
+                        <li>
+                            <a href="{{ route('admin.backend.language.index') }}" class="sidebar-link">
+                                <span> {{ __('admin_local.Backed Language') }} </span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </li>
+            @endif
+        @endif
+    @endif
     @if (hasPermission(['language-index', 'language-create', 'language-update', 'language-delete', 'backend-string-index']))
         <li class="sidebar-list">
             <a class="sidebar-link sidebar-title" href="javascript:void(0)" aria-expanded="false">
