@@ -23,6 +23,14 @@ Route::group([
 ], function () {
     Route::resource('speciality',DoctorSpecialityController::class);
     Route::get('/test',function(){
-        dd(Config::get('module'));
+        dd(dm_module_config()['name']);
+
+        // $command = shell_exec('composer dump-autoload');
+
+        // if($command){
+        //     echo 'success';
+        // }else{
+        //     echo 'failed';
+        // }
     });
 });

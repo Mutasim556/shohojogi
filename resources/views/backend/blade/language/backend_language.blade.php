@@ -186,7 +186,7 @@
                                         <div class="col-md-3">
                                             <form method="POST" action="{{ route('admin.backend.language.store') }}">
                                                 @csrf
-                                                <input type="hidden" value="{{ resource_path('views/backend') }},{{ app_path('Http/Controllers/Admin') }},{{ app_path('Http/Middleware/Admin') }}" name="directory">
+                                                <input type="hidden" value="{{ resource_path('views/backend') }},{{ app_path('Http/Controllers/Admin') }},{{ app_path('Http/Middleware/Admin') }},{{ base_path('Modules') }}" name="directory">
                                                 <input type="hidden" value="admin_local" name="file_name">
                                                 <input type="hidden" value="{{ $language->lang }}" name="lang">
                                                 <button type="submit" class="btn btn-success m-t-30"> {{ __('admin_local.Generate String')}}</button>
@@ -212,7 +212,7 @@
                                                     <th>{{ __('admin_local.Traslation') }}</th>
                                                     <th>{{ __('admin_local.Action') }}</th>
                                                 </tr>
-                                            </thead> 
+                                            </thead>
                                             <tbody>
                                                 @php
                                                     $translatedvalue = trans('admin_local', [], $language->lang);
@@ -226,7 +226,7 @@
                                                             @if (hasPermission(['backend-string-update']))
                                                             <button id="edit_button" data-key="{{ $key }}" data-value="{{ $value }}" data-lang_code="{{ $language->lang }}" data-filename="admin_local" class="btn btn-danger px-2 py-1" data-bs-toggle="modal" style="cursor: pointer;"
                                                             data-bs-target="#edit-string-modal">
-                                                                <i class="fa fa-pencil-square-o"></i> 
+                                                                <i class="fa fa-pencil-square-o"></i>
                                                             </button>
                                                             @else
                                                             <span class="badge badge-danger">{{ __('admin_local.No Permission') }}</span>

@@ -156,4 +156,8 @@ return array (
   'User removed successfully' => 'User removed successfully',
   'Please Login First !' => 'Please Login First !',
   'Your account has been suspended . Please contact with super admin' => 'Your account has been suspended . Please contact with super admin',
+  'Doctor' => 'Doctor',
+  'Doctor Specility' => 'Doctor Specility',
+  'Doctor Designation' => 'Doctor Designation',
+  'Doctor Department' => 'Doctor Department',
 );
