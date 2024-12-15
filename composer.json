@@ -37,8 +37,7 @@
         },
         "files": [
             "app/Helpers/helpers.php",
-            "Modules/DoctorManagement/app/Helpers/dm_helpers.php",
-           "Modules/DoctorManagement/app/Helpers/test_helper.php"
+            "Modules/DoctorManagement/app/Helpers/dm_helpers.php"
         ]
     },
     "autoload-dev": {
