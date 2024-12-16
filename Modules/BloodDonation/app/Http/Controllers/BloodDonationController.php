@@ -1,26 +1,18 @@
 <?php
 
-namespace Modules\DoctorManagement\app\Http\Controllers;
+namespace Modules\BloodDonation\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DoctorSpecialityController extends Controller
+class BloodDonationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function __construct()
-    {
-        $this->middleware(['permission:doctor-speciality-index,admin'])->only('index');
-        $this->middleware(['permission:doctor-speciality-create,admin'])->only('store');
-        $this->middleware(['permission:doctor-speciality-update,admin'])->only(['edit','update','updateStatus']);
-        $this->middleware(['permission:doctor-speciality-delete,admin'])->only('destroy');
-    }
-
     public function index()
     {
-        return view('doctormanagement::index');
+        return view('blooddonation::index');
     }
 
     /**
@@ -28,7 +20,7 @@ class DoctorSpecialityController extends Controller
      */
     public function create()
     {
-        return view('doctormanagement::create');
+        return view('blooddonation::create');
     }
 
     /**
@@ -44,7 +36,7 @@ class DoctorSpecialityController extends Controller
      */
     public function show($id)
     {
-        return view('doctormanagement::show');
+        return view('blooddonation::show');
     }
 
     /**
@@ -52,7 +44,7 @@ class DoctorSpecialityController extends Controller
      */
     public function edit($id)
     {
-        return view('doctormanagement::edit');
+        return view('blooddonation::edit');
     }
 
     /**

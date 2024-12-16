@@ -1,6 +1,6 @@
 <?php
-    if(config('doctormanagement')){
-        $module_config = config('doctormanagement');
+    if(config('blooddonation')){
+        $module_config = config('blooddonation');
     }else{
         $module_config = ['valid'=>false];
     }

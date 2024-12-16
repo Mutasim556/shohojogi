@@ -1,26 +1,28 @@
 <?php
 
-namespace Modules\DoctorManagement\app\Http\Controllers;
+namespace Modules\BloodDonation\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
-class DoctorSpecialityController extends Controller
+class BloodDonorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function __construct()
-    {
-        $this->middleware(['permission:doctor-speciality-index,admin'])->only('index');
-        $this->middleware(['permission:doctor-speciality-create,admin'])->only('store');
-        $this->middleware(['permission:doctor-speciality-update,admin'])->only(['edit','update','updateStatus']);
-        $this->middleware(['permission:doctor-speciality-delete,admin'])->only('destroy');
-    }
-
     public function index()
     {
-        return view('doctormanagement::index');
+        // echo "hi";
+        $users = User::where('delete',0);
+        if(Auth::guard('admin')->check() && userRoleName()!='Super Amin'){
+            $users=$users->where('created_by',LoggedAdmin()->id);
+        }
+        $users = $users->get();
+        $roles = Role::all();
+        return view('blooddonation::backend.donor.index',compact('users','roles'));
     }
 
     /**
@@ -28,7 +30,7 @@ class DoctorSpecialityController extends Controller
      */
     public function create()
     {
-        return view('doctormanagement::create');
+        return view('blooddonation::create');
     }
 
     /**
@@ -44,7 +46,7 @@ class DoctorSpecialityController extends Controller
      */
     public function show($id)
     {
-        return view('doctormanagement::show');
+        return view('blooddonation::show');
     }
 
     /**
@@ -52,7 +54,7 @@ class DoctorSpecialityController extends Controller
      */
     public function edit($id)
     {
-        return view('doctormanagement::edit');
+        return view('blooddonation::edit');
     }
 
     /**

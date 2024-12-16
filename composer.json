@@ -37,7 +37,8 @@
         },
         "files": [
             "app/Helpers/helpers.php",
-            "Modules/DoctorManagement/app/Helpers/dm_helpers.php"
+            "Modules/DoctorManagement/app/Helpers/dm_helpers.php",
+            "Modules/BloodDonation/app/Helpers/blood_noation_helper.php"
         ]
     },
     "autoload-dev": {

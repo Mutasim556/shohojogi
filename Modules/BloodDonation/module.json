@@ -1,0 +1,11 @@
+{
+    "name": "BloodDonation",
+    "alias": "blooddonation",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BloodDonation\\Providers\\BloodDonationServiceProvider"
+    ],
+    "files": []
+}

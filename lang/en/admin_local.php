@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'Access Denied' => 'Access Denied',
+  'Important Message' => 'Important Message',
   'Log In' => 'Log In',
   'Invalid Email or Password' => 'Invalid Email or Password',
   'Email / Phone / Username' => 'Email / Phone / Username',
@@ -156,6 +158,13 @@ return array (
   'User removed successfully' => 'User removed successfully',
   'Please Login First !' => 'Please Login First !',
   'Your account has been suspended . Please contact with super admin' => 'Your account has been suspended . Please contact with super admin',
+  'Blood Donation' => 'Blood Donation',
+  'Blood Donor' => 'Blood Donor',
+  'Blood Donor List' => 'Blood Donor List',
+  'Add Blood Donor' => 'Add Blood Donor',
+  'Blood Group' => 'Blood Group',
+  'Last Donation Date' => 'Last Donation Date',
+  'Next Donation Date' => 'Next Donation Date',
   'Doctor' => 'Doctor',
   'Doctor Specility' => 'Doctor Specility',
   'Doctor Designation' => 'Doctor Designation',

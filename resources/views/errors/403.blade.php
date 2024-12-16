@@ -14,7 +14,7 @@
                 <div class="card-body my-2">
                     <div class="row">
                         <div class="col-md-4 mx-auto text-center">
-                            <img src="{{ asset('admin/images/403.avif') }}" style="height: 200px" alt="">
+                            <img src="{{ asset('public/admin/images/403.avif') }}" style="height: 200px" alt="">
                         </div>
                     </div>
                 </div>

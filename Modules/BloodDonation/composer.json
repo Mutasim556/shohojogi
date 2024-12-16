@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/blooddonation",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\BloodDonation\\": "app/",
+            "Modules\\BloodDonation\\Database\\Factories\\": "database/factories/",
+            "Modules\\BloodDonation\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\BloodDonation\\Tests\\": "tests/"
+        }
+    }
+}
