@@ -78,9 +78,9 @@ class BloodDonorStoreRequest extends FormRequest
         if($this->donor_image){
             $files = $this->donor_image;
             $file = time().'.'.$files->getClientOriginalExtension();
-            $file_name = 'Modules/BloodDonation/public/asset/donor'.$file;
+            $file_name = 'Modules/BloodDonation/public/asset/donor/'.$file;
             $manager = new ImageManager(new Driver);
-            $manager->read($this->donor_image)->save('Modules/BloodDonation/public/asset/donor'.$file);
+            $manager->read($this->donor_image)->save('Modules/BloodDonation/public/asset/donor/'.$file);
         }else{
             $file_name = "";
         }
@@ -90,7 +90,7 @@ class BloodDonorStoreRequest extends FormRequest
         $user->save();
 
         if($this->last_donation_date){
-            $next_donation_date = date('Y-m-d', strtotime($this->last_donation_date. ' +30 days'));
+            $next_donation_date = date('Y-m-d', strtotime($this->last_donation_date. ' +90 days'));
         }else{
             $next_donation_date = date('Y-m-d');
         }
