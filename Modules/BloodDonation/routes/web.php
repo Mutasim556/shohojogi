@@ -20,4 +20,10 @@ Route::group([
     'middleware'=>'web',
 ], function () {
     Route::resource('/donor',BloodDonorController::class);
+    Route::group(['prefix'=>'donor'],function(){
+        Route::get('/get/division-information/{type}/{id}',function(){
+            $result = request()->type=='district'?get_district(request()->id):get_upazila(request()->id);
+            return response()->json($result);
+        });
+    });
 });

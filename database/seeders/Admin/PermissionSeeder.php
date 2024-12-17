@@ -46,11 +46,7 @@ class PermissionSeeder extends Seeder
         // Permission::create(['guard_name'=>'admin','name'=>'doctor-speciality-update','group_name'=>'Doctor Speciality']);
         // Permission::create(['guard_name'=>'admin','name'=>'doctor-speciality-delete','group_name'=>'Doctor Speciality']);
 
-        //creating permission for Blood Donation
-        // Permission::create(['guard_name'=>'admin','name'=>'blood-donor-index','group_name'=>'Blood Donor']);
-        // Permission::create(['guard_name'=>'admin','name'=>'blood-donor-create','group_name'=>'Blood Donor']);
-        // Permission::create(['guard_name'=>'admin','name'=>'blood-donor-update','group_name'=>'Blood Donor']);
-        // Permission::create(['guard_name'=>'admin','name'=>'blood-donor-delete','group_name'=>'Blood Donor']);
+        
 
     }
 }

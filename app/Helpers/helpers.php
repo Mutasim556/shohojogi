@@ -3,6 +3,7 @@
 use App\Models\Admin\Language;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 
 function userRoleName(){
     return auth()->guard('admin')->user()->getRoleNames()->first();
@@ -55,3 +56,16 @@ function routeExist(string $routeName){
 function maintenanceMailSwitch(){
     return false;
 } 
+
+
+function get_division(){
+    return DB::table('divisions')->where([['status',1]])->select('id','name','bn_name')->get();
+}
+
+function get_district($id){
+    return DB::table('districts')->where([['status',1],['division_id',$id]])->select('id','name','bn_name')->get();
+}
+
+function get_upazila($id){
+    return DB::table('upazilas')->where([['status',1],['district_id',$id]])->select('id','name','bn_name')->get();
+}

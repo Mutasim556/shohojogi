@@ -10,10 +10,12 @@ class BloodDonor extends Model
 {
     use HasFactory;
 
+    protected $table = 'blood_donors';
+
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    // protected $fillable = [];
 
     // protected static function newFactory(): BloodDonorFactory
     // {

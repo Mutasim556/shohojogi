@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Modules\BloodDonation\app\Http\Requests\BloodDonor\BloodDonorStoreRequest;
 use Spatie\Permission\Models\Role;
 
 class BloodDonorController extends Controller
@@ -17,12 +19,13 @@ class BloodDonorController extends Controller
     {
         // echo "hi";
         $users = User::where('delete',0);
-        if(Auth::guard('admin')->check() && userRoleName()!='Super Amin'){
+        if(!hasPermission(['blood-donor-all-view'])){
             $users=$users->where('created_by',LoggedAdmin()->id);
         }
         $users = $users->get();
         $roles = Role::all();
-        return view('blooddonation::backend.donor.index',compact('users','roles'));
+        $divisions = get_division();
+        return view('blooddonation::backend.donor.index',compact('users','roles','divisions'));
     }
 
     /**
@@ -36,9 +39,11 @@ class BloodDonorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BloodDonorStoreRequest $data)
     {
-        //
+        if($data->store()){
+            echo "hello";
+        }
     }
 
     /**
