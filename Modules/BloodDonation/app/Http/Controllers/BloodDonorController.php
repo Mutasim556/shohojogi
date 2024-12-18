@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\BloodDonation\app\Http\Requests\BloodDonor\BloodDonorStoreRequest;
+use Modules\BloodDonation\app\Models\BloodDonor;
+use Modules\BloodDonation\app\Transformers\BloodDonorResource;
 use Spatie\Permission\Models\Role;
 
 class BloodDonorController extends Controller
@@ -15,17 +17,25 @@ class BloodDonorController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('permission:blood-donor-index,admin')->only('index');
+        $this->middleware('permission:blood-donor-create,admin')->only('store');
+        $this->middleware('permission:blood-donor-update,admin')->only(['edit','update']);
+        $this->middleware('permission:blood-donor-delete,admin')->only('destroy');
+    }
     public function index()
     {
         // echo "hi";
-        $users = User::where('delete',0);
+        $donors = BloodDonor::with('user','division','district','upazila');
         if(!hasPermission(['blood-donor-all-view'])){
-            $users=$users->where('created_by',LoggedAdmin()->id);
+            $donors=$donors->where('created_by',LoggedAdmin()->id);
         }
-        $users = $users->get();
+        $donors = $donors->get();
         $roles = Role::all();
         $divisions = get_division();
-        return view('blooddonation::backend.donor.index',compact('users','roles','divisions'));
+        $districts = get_district('7');
+        return view('blooddonation::backend.donor.index',compact('donors','roles','divisions','districts'));
     }
 
     /**
@@ -41,8 +51,18 @@ class BloodDonorController extends Controller
      */
     public function store(BloodDonorStoreRequest $data)
     {
-        if($data->store()){
-            echo "hello";
+        $donor_info = $data->store();
+        if($donor_info){
+            $donor = BloodDonor::with('user','division','district','upazila')->where([['id',$donor_info]])->first();
+            return response([
+                'donor' => $donor,
+                'title' => __('admin_local.Congratulations !'),
+                'text' => __('admin_local.Donor added successfully.'),
+                'confirmButtonText' => __('admin_local.Ok'),
+                'hasAnyPermission' => hasPermission(['blood-donor-update', 'blood-donor-delete']),
+                'hasEditPermission' => hasPermission(['blood-donor-update']),
+                'hasDeletePermission' => hasPermission(['blood-donor-delete']),
+            ], 200);
         }
     }
 
@@ -59,7 +79,9 @@ class BloodDonorController extends Controller
      */
     public function edit($id)
     {
-        return view('blooddonation::edit');
+        $donor = BloodDonor::with('user','division','district','upazila')->where([['id',$id]])->first();
+        $donor = BloodDonorResource::make($donor);
+        return $donor;
     }
 
     /**
@@ -76,5 +98,22 @@ class BloodDonorController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changeStatus(){
+        DB::beginTransaction();
+        try {
+            //code...
+            $donor = BloodDonor::where([['id',request()->id]])->select('user_id')->first();
+            $user = User::findOrFail($donor->user_id);
+            $user->status = request()->status;
+            $user->save();
+            DB::commit();
+            return [
+                'status'=>$user->status,
+            ];
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

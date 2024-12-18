@@ -25,5 +25,6 @@ Route::group([
             $result = request()->type=='district'?get_district(request()->id):get_upazila(request()->id);
             return response()->json($result);
         });
+        Route::get('/status/update',[BloodDonorController::class,'changeStatus']);
     });
 });
