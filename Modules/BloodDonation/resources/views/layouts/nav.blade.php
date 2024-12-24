@@ -25,7 +25,7 @@
                 <?php
                     foreach($module_config['sub_menu'] as $submenu){
                 ?>
-                <?php if (hasPermission($submenu['permissions'])){ ?>
+                <?php if (hasPermission($submenu['permissions'])){ ?> 
                     <li>
                         <a href="<?php echo $submenu['route'] ?>" class="sidebar-link">
                             <span> <?php echo $submenu['name'] ?> </span>

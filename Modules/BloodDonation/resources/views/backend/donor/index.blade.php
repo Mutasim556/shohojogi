@@ -217,7 +217,10 @@
                 <div class="modal-body" style="margin-top: -20px">
                     <form action="" id="edit_donor_form">
                         @csrf
+                        @method('PUT')
                         <input type="hidden" id="donor_id" name="donor_id" value="">
+                        <input type="hidden" id="user_id" name="user_id" value="">
+                        <input type="hidden" id="tr_id" name="tr_id" value="">
                         <div class="row">
                             <div class="col-lg-6 mt-2">
                                 <label for="user_name"><strong>{{ __('admin_local.Donor Full Name') }} *</strong></label>
@@ -306,19 +309,14 @@
                                     id="last_donation_date">
                                 <span class="text-danger err-mgs" id="last_donation_date_err"></span>
                             </div>
-                            <div class="col-lg-3 mt-2">
+                            {{-- <div class="col-lg-3 mt-2">
                                 <label for="user_email"><strong>{{ __('admin_local.Is Active') }} </strong></label><br>
-                                <input type="checkbox" name="is_active" id="is_active" checked>
-                            </div>
+                                <input type="checkbox" name="is_active" id="is_active" >
+                            </div> --}}
                             <div class="col-lg-3 mt-2">
                                 <label for="user_email"><strong>{{ __('admin_local.Is TMP Password') }}
                                     </strong></label><br>
-                                <input type="checkbox" name="is_tmp_password" id="is_tmp_password" checked>
-                            </div>
-                            <div class="col-lg-6 mt-2">
-                                <label for="user_password"><strong>{{ __('admin_local.Password') }} *</strong></label>
-                                <input type="password" class="form-control" name="password" id="password">
-                                <span class="text-danger err-mgs" id="password_err"></span>
+                                <input type="checkbox" name="is_tmp_password" id="is_tmp_password">
                             </div>
                             <div class="col-lg-8 mt-2">
                                 <label for="user_phone"><strong>{{ __('admin_local.Last Donation Details') }}
@@ -393,7 +391,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($donors as $donor)
-                                        <tr id="tr-{{ $donor->id }}" data-id="{{ $donor->id }}">
+                                        <tr id="trid-{{ $donor->id }}" data-id="{{ $donor->id }}">
                                             <td>{{ $donor->user->name }}</td>
                                             <td>{!! $donor->user->image ? '<img src="'.asset($donor->user->image).'" height="100px"/>' : 'No File' !!}</td>
                                             <td>{{ $donor->user->phone }}</td>
@@ -413,7 +411,7 @@
                                                         {{ $donor->user->status == 1 ? 'checked' : '' }} />
                                                 @else
                                                     <span
-                                                        class="badge badge-danger">{{ __('admin_loacl.No Permission') }}</span>
+                                                        class="badge badge-danger">{{ __('admin_local.No Permission') }}</span>
                                                 @endif
 
                                             </td>
@@ -440,7 +438,7 @@
                                                     </div>
                                                 @else
                                                     <span
-                                                        class="badge badge-danger">{{ __('admin_loacl.No Permission') }}</span>
+                                                        class="badge badge-danger">{{ __('admin_local.No Permission') }}</span>
                                                 @endif
 
 
@@ -492,6 +490,10 @@
         var download_title = `{{ __('admin_local.Title') }}`;
         var no_file = `{{ __('admin_local.No File') }}`;
         var download_remove = `{{ __('admin_local.Remove') }}`;
+        var delete_swal_title = `{{ __('admin_local.Are you sure?') }}`;
+        var delete_swal_text =
+            `{{ __('admin_local.Once deleted, you will not be able to recover this data') }}`;
+        var delete_swal_cancel_text = `{{ __('admin_local.Delete request canceld successfully') }}`;
     </script>
     <script src="{{ asset(bld_asset() . 'custom/blood_donor.js') }}"></script>
 @endpush

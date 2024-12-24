@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\BloodDonation\Http\Controllers\BloodDonationController;
+use Modules\BloodDonation\app\Http\Controllers\BloodDonationController;
 
 /*
  *--------------------------------------------------------------------------

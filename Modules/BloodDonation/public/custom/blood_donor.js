@@ -185,16 +185,36 @@ $(document).on('click', '#edit_button', function () {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        success: function (data) {
-            $('#edit_donor_form #donor_id').val(data.id);
-            $('#edit_donor_form #donor_name').val(data.donor_name);
-            $('#edit_donor_form #parent_donor').val(data.parent_donor_id);
-            $('#edit_donor_form #parent_donor').trigger('change');
-            if(data.donor_image==''){
-                $('#edit_donor_form #image_preview').empty().append(no_file);
-            }else{
-                $('#edit_donor_form #image_preview').empty().append(`<img src="/${data.donor_image}">`);
-            }
+        success: function (rdata) {
+            // console.log(data.address);
+            var data = rdata.data;
+            $('#edit_donor_form #donor_id').val(data.donor_id);
+            $('#edit_donor_form #user_id').val(data.user_id);
+            $('#edit_donor_form #tr_id').val("trid-"+donor);
+            $('#edit_donor_form #name').val(data.donor_name);
+            $('#edit_donor_form #username').val(data.username);
+            $('#edit_donor_form #division').val(data.division).trigger('change');
+            var option = `<option value="">Select Please</option>`;
+            $.each(data.districts,function(key,val){
+                option = option + `<option value="${val.id}">${val.name}</option>`;
+            });
+            $('#edit_donor_form #district').empty().append(option).val(data.district).trigger('change');
+
+            option = `<option value="">Select Please</option>`;
+            $.each(data.upazilas,function(key,val){
+                option = option + `<option value="${val.id}">${val.name}</option>`;
+            });
+            $('#edit_donor_form #upazila').empty().append(option).val(data.upazila).trigger('change');
+
+            $('#edit_donor_form #address').val(data.address);
+            $('#edit_donor_form #phone').val(data.phone);
+            $('#edit_donor_form #email').val(data.email);
+            $('#edit_donor_form #dob').val(data.dob);
+            $('#edit_donor_form #blood_group').val(data.blood_group).trigger('change');
+            $('#edit_donor_form #last_donation_date').val(data.last_donation_date);
+            $('#edit_donor_form #is_active').removeAttr('checked').attr('checked',data.is_active==0?false:true);
+            $('#edit_donor_form #is_tmp_password').removeAttr('checked').attr('checked',data.is_tmp_password==0?false:true);
+            $('#edit_donor_form #last_donation_details').val(data.donation_details);
         },
         error: function (err) {
             if(err.status===403){
@@ -222,4 +242,123 @@ $(document).on('click', '#edit_button', function () {
 
 });
 
+$(document).on('submit','#edit_donor_form',function(e){
+    e.preventDefault();
+    $('#edit_donor_form #submit_btn').html(submit_btn_after+'....');
+    $('#edit_donor_form #submit_btn').addClass('disabled');
+    var trid = '#'+$('#tr_id', this).val();
+    var formData = new FormData(this);
 
+    $.ajax({
+        type: "POST",
+        url: 'donor/'+$('#edit_donor_form #donor_id').val(),
+        data: formData,
+        dataType: 'JSON',
+        contentType: false,
+        cache: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            $('button[type=submit]', '#edit_donor_form').html(submit_btn_before);
+            $('button[type=submit]', '#edit_donor_form').removeClass('disabled');
+            swal({
+                icon: "success",
+                title: data.title,
+                text: data.text,
+                confirmButtonText: data.confirmButtonText,
+            }).then(function(){
+                $('button[type=submit]', '#edit_donor_form').html(submit_btn_before);
+                $('button[type=submit]', '#edit_donor_form').removeClass('disabled');
+                $('td:nth-child(1)',trid).html(data.donor.donor_name);
+                let donor_image = data.donor.donor_image ? '<img src="'+base_url+'/'+data.donor.donor_image +'" height="100px"/>' : no_file;
+                $('td:nth-child(2)',trid).empty().append(donor_image);
+                $('td:nth-child(3)',trid).html(data.donor.phone);
+                $('td:nth-child(4)',trid).html(data.donor.username);
+                $('td:nth-child(5)',trid).html(data.donor.district_name);
+                $('td:nth-child(6)',trid).html(data.donor.upazila_name);
+                $('td:nth-child(7)',trid).html(data.donor.blood_group);
+                $('td:nth-child(8)',trid).html(data.donor.last_donation_date);
+                $('td:nth-child(9)',trid).html(data.donor.next_donation_date);
+
+                $('button[type=button]', '#edit_donor_form').click();
+            })
+        },
+        error: function (err) {
+            $('button[type=submit]', '#edit_donor_form').html(submit_btn_before);
+            $('button[type=submit]', '#edit_donor_form').removeClass('disabled');
+            if(err.status===403){
+                var err_message = err.responseJSON.message.split("(");
+                swal({
+                    icon: "warning",
+                    title: "Warning !",
+                    text: err_message[0],
+                    confirmButtonText: "Ok",
+                }).then(function(){
+                    $('button[type=button]', '#edit_donor_form').click();
+                });
+
+            }
+
+            $('#edit_donor_form .err-mgs').each(function(id,val){
+                $(this).prev('input').removeClass('border-danger is-invalid')
+                $(this).prev('textarea').removeClass('border-danger is-invalid')
+                $(this).prev('span').find('.select2-selection--single').attr('id','')
+                $(this).empty();
+            })
+            $.each(err.responseJSON.errors,function(idx,val){
+                // console.log('#edit_donor_form #'+idx);
+                var exp = idx.replace('.','_');
+                $('#edit_donor_form #'+exp).addClass('border-danger is-invalid')
+                $('#edit_donor_form #'+exp).next('span').find('.select2-selection--single').attr('id','invalid-selec2')
+                $('#edit_donor_form #'+exp).next('.err-mgs').empty().append(val);
+
+                $('#edit_donor_form #'+exp+"_err").empty().append(val);
+            })
+        }
+    })
+});
+//delete data
+$(document).on('click','#delete_button',function(){
+    var delete_id = $(this).closest('tr').data('id');
+    swal({
+        title: delete_swal_title,
+        text: delete_swal_text,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type: "delete",
+                url: 'donor/'+delete_id,
+                data: {
+                    _token : $("input[name=_token]").val(),
+                },
+                success: function (data) {
+                    swal({
+                        icon: "success",
+                        title: data.title,
+                        text: data.text,
+                        confirmButtonText: data.confirmButtonText,
+                    }).then(function () {
+                        $('#trid-'+delete_id).hide();
+                    });
+                },
+                error: function (err) {
+                    var err_message = err.responseJSON.message.split("(");
+                    swal({
+                        icon: "warning",
+                        title: "Warning !",
+                        text: err_message[0],
+                        confirmButtonText: "Ok",
+                    });
+                }
+            });
+           
+        } else {
+            swal(delete_swal_cancel_text);
+        }
+    })
+});

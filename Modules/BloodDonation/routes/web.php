@@ -17,7 +17,7 @@ use Modules\BloodDonation\app\Http\Controllers\BloodDonorController;
 Route::group([
     'prefix'=>'blood-donation',
     'as'=>'blood_donation.',
-    'middleware'=>'web',
+    'middleware'=>'admin',
 ], function () {
     Route::resource('/donor',BloodDonorController::class);
     Route::group(['prefix'=>'donor'],function(){
